@@ -1,0 +1,40 @@
+###
+### Copyright (c) 2006 Kedacom
+###
+
+#########################################################################
+###
+###  DESCRIPTION:
+###    Common definitions for all Makefiles in gbadpater linux project.
+###
+#########################################################################
+
+TOP := ..
+
+COMM_DIR := ..
+
+SRC_DIR := $(TOP)/src
+
+## Name and type of the target for this Makefile
+ARC_TARGET      := protobuf_net
+
+## Define debugging symbols
+DEBUG = 1
+LINUX_COMPILER = _LINUX_
+
+## Object files that compose the target(s)
+SRCS := $(wildcard $(SRC_DIR)/*.cpp)
+OBJS := $(patsubst %.cpp,%, $(SRCS))
+
+## Libraries to include in shared object file
+
+## Add driver-specific include directory to the search path
+INC_PATH += ../include ../thirdparty/poco/Foundation/include ../thirdparty/poco/Net/include ../thirdparty/protobuf/include ../thirdparty/zlib/include
+
+INSTALL_LIB_PATH = ../lib
+
+include $(TOP)/common.mk
+
+clean:
+	rm -f $(SRC_DIR)/*.o
+	rm -f *.a
