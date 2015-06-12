@@ -1,17 +1,17 @@
 #include "syncwaitmsg.h"
 
-CSyncWait::CSyncWait()
+CSyncWaitMsg::CSyncWaitMsg()
 {
 	_msg1 = INVALID_WAIT_MSG;
 	_msg2 = INVALID_WAIT_MSG;
 }
 
-CSyncWait::~CSyncWait()
+CSyncWaitMsg::~CSyncWaitMsg()
 {
 
 }
 
-bool CSyncWait::waitMsg(int msg1, int msg2/* = INVALID_WAIT_MSG*/, int waitTime/* = INFINITE*/)
+bool CSyncWaitMsg::WaitMsg(int msg1, int msg2/* = INVALID_WAIT_MSG*/, int waitTime/* = INFINITE*/)
 {
 	if (INVALID_WAIT_MSG == msg1)
 		return false;
@@ -31,15 +31,15 @@ bool CSyncWait::waitMsg(int msg1, int msg2/* = INVALID_WAIT_MSG*/, int waitTime/
 	return true;
 }
 
-void CSyncWait::msgCome(int msg)
+void CSyncWaitMsg::MsgCome(int msg)
 {
 	if(msg == _msg1 || msg == _msg1)
 	{
-		reset();
+		Reset();
 	}
 }
 
-void CSyncWait::reset()
+void CSyncWaitMsg::Reset()
 {
 	_msg1 = INVALID_WAIT_MSG;
 	_msg2 = INVALID_WAIT_MSG;

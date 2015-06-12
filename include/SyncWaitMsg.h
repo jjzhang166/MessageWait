@@ -3,17 +3,17 @@
 
 #include "Poco/Event.h"
 
-class CSyncWait
+class CSyncWaitMsg
 {
 public:
-	CSyncWait();
-	~CSyncWait();
+	CSyncWaitMsg();
+	~CSyncWaitMsg();
 
-	bool waitMsg(int msg1, int msg2 = INVALID_WAIT_MSG, int waitTime = INFINITE);
+	bool WaitMsg(int msg1, int msg2 = INVALID_WAIT_MSG, int waitTime = INFINITE);
 
-	void msgCome(int msg);
+	void MsgCome(int msg);
 
-	void reset();
+	void Reset();
 
 
 private:

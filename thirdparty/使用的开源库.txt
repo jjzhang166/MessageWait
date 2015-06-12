@@ -1,0 +1,5 @@
+boost_1_55_0
+œ¬‘ÿµÿ÷∑£∫http://sourceforge.net/projects/boost/files/boost/1.55.0/
+
+poco-1.4.7
+http://pocoproject.org/releases/poco-1.4.7/

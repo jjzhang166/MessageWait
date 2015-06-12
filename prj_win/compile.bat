@@ -1,14 +1,14 @@
 @echo off
-echo protobuf_net lib build begin
+echo MessageWait lib build begin
 
 if defined VS100COMNTOOLS (
 call "%VS100COMNTOOLS%\vsvars32.bat")
 
-devenv protobuf_net.vcxproj /Rebuild "Release" 
-devenv protobuf_net.vcxproj /Rebuild "Debug" 
+devenv MessageWait.vcxproj /Rebuild "Release" 
+devenv MessageWait.vcxproj /Rebuild "Debug" 
 
 rmdir /s /q .\debug
 rmdir /s /q .\release
 
-echo build protobuf_net lib over
+echo build MessageWait lib over
 echo on
