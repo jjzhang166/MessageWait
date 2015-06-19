@@ -1,7 +1,7 @@
 
 
-#ifndef MessageCenter_INCLUDED
-#define MessageCenter_INCLUDED
+#ifndef AsyncWaitMsg_INCLUDED
+#define AsyncWaitMsg_INCLUDED
 
 #include <map>
 #include <vector>
@@ -55,12 +55,12 @@ public:
 	std::vector<int> _msgVec;
 };
 
-class MessageCenter
+class AsyncWaitMsg
 {
 public:
-	static MessageCenter& instance()
+	static AsyncWaitMsg& instance()
 	{
-		static MessageCenter mc;
+		static AsyncWaitMsg mc;
 		return mc;
 	}
 
@@ -80,9 +80,9 @@ public:
 	void Stop();
 
 private:
-	MessageCenter();
-	MessageCenter(const MessageCenter&);
-	MessageCenter& operator= (const MessageCenter&);
+	AsyncWaitMsg();
+	AsyncWaitMsg(const AsyncWaitMsg&);
+	AsyncWaitMsg& operator= (const AsyncWaitMsg&);
 	bool AddListener(int msg, boost::shared_ptr<CallbackItemBase>);
 
 	typedef std::vector<boost::shared_ptr<CallbackItemBase> > CallbackItemVec;
@@ -95,4 +95,4 @@ private:
 
 
 
-#endif  // MessageCenter_INCLUDED
+#endif  // AsyncWaitMsg_INCLUDED

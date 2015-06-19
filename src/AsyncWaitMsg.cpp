@@ -25,13 +25,13 @@ namespace
 }
 
 
-MessageCenter::MessageCenter()
+AsyncWaitMsg::AsyncWaitMsg()
 {
 
 }
 
 
-bool MessageCenter::AddListener(int msg, boost::shared_ptr<CallbackItemBase> pSrcItem)
+bool AsyncWaitMsg::AddListener(int msg, boost::shared_ptr<CallbackItemBase> pSrcItem)
 {
 	assert(pSrcItem);
 
@@ -66,7 +66,7 @@ bool MessageCenter::AddListener(int msg, boost::shared_ptr<CallbackItemBase> pSr
 	return true;
 }
 
-bool MessageCenter::AddListener(boost::shared_ptr<NormalCallbackItem> pSrcItem)
+bool AsyncWaitMsg::AddListener(boost::shared_ptr<NormalCallbackItem> pSrcItem)
 {
 	assert(pSrcItem);
 
@@ -110,7 +110,7 @@ bool MessageCenter::AddListener(boost::shared_ptr<NormalCallbackItem> pSrcItem)
 }
 
 
-bool MessageCenter::AddListener(boost::shared_ptr<MutiCallbackItem> pSrcItem)
+bool AsyncWaitMsg::AddListener(boost::shared_ptr<MutiCallbackItem> pSrcItem)
 {
 	assert(pSrcItem);
 	if (pSrcItem->_msgVec.empty())
@@ -163,7 +163,7 @@ bool MessageCenter::AddListener(boost::shared_ptr<MutiCallbackItem> pSrcItem)
 	return true;
 }
 
-bool MessageCenter::RemoveListener(int msg, boost::shared_ptr<CallbackItemBase> pCallbackItem)
+bool AsyncWaitMsg::RemoveListener(int msg, boost::shared_ptr<CallbackItemBase> pCallbackItem)
 {
 	FastMutex::ScopedLock lock(s_mutex);
 	if (_callbackMap.find(msg) != _callbackMap.end())
@@ -181,7 +181,7 @@ bool MessageCenter::RemoveListener(int msg, boost::shared_ptr<CallbackItemBase> 
 }
 
 // From small to large 
-void MessageCenter::RegMsgTimeOutCallback(int msg, boost::shared_ptr<CallbackItemBase> pCallbackItem)
+void AsyncWaitMsg::RegMsgTimeOutCallback(int msg, boost::shared_ptr<CallbackItemBase> pCallbackItem)
 {
 	assert(pCallbackItem);
 
@@ -215,7 +215,7 @@ void MessageCenter::RegMsgTimeOutCallback(int msg, boost::shared_ptr<CallbackIte
 		if (!s_TimerStarted)
 		{
 			// open timer
-			TimerCallback<MessageCenter> tc(*this, &MessageCenter::MsgTimeOutChecking);
+			TimerCallback<AsyncWaitMsg> tc(*this, &AsyncWaitMsg::MsgTimeOutChecking);
 			s_timeoutTimer.start(tc);
 			s_TimerStarted = true;
 			cout << "_timeoutTimer.start" << endl;
@@ -229,7 +229,7 @@ void MessageCenter::RegMsgTimeOutCallback(int msg, boost::shared_ptr<CallbackIte
 	}
 }
 
-void MessageCenter::Dispatch(int msg, int param1, int param2)
+void AsyncWaitMsg::Dispatch(int msg, int param1, int param2)
 {
 	FastMutex::ScopedLock lock(s_mutex);
 	// Erase the relational items of the message from the _timeoutCallbackList.
@@ -331,7 +331,7 @@ void MessageCenter::Dispatch(int msg, int param1, int param2)
 		}
 }
 
-void MessageCenter::MsgTimeOutChecking(Poco::Timer& timer)
+void AsyncWaitMsg::MsgTimeOutChecking(Poco::Timer& timer)
 {
 	FastMutex::ScopedLock lock(s_mutex);
 	// stop timer if _timeoutCallbackList is empty
@@ -385,7 +385,7 @@ void MessageCenter::MsgTimeOutChecking(Poco::Timer& timer)
 	}
 }
 
-void MessageCenter::Reset()
+void AsyncWaitMsg::Reset()
 {
 	s_event.reset();
 	s_waitEvent = true;
@@ -396,7 +396,7 @@ void MessageCenter::Reset()
 	_timeoutCallbackList.clear();
 }
 
-void MessageCenter::Stop()
+void AsyncWaitMsg::Stop()
 {
 	s_event.set();
 	s_timeoutTimer.stop();

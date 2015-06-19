@@ -3,11 +3,11 @@
 
 #include "Poco/Event.h"
 
-class CSyncWaitMsg
+class SyncWaitMsg
 {
 public:
-	CSyncWaitMsg();
-	~CSyncWaitMsg();
+	SyncWaitMsg();
+	~SyncWaitMsg();
 
 	bool WaitMsg(int msg1, int msg2 = INVALID_WAIT_MSG, int waitTime = INFINITE);
 

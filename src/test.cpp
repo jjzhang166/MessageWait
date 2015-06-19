@@ -28,7 +28,7 @@ namespace
 		testMessage5
 	};
 
-	CSyncWaitMsg s_syncWait;
+	SyncWaitMsg s_syncWait;
 }
 
 
@@ -58,7 +58,7 @@ class SyncWaitMsg_Runnable: public Runnable
 public:
 	virtual void run()
 	{
-		Thread::sleep(100);
+		Poco::Thread::sleep(100);
 		s_syncWait.MsgCome(testMessage1);
 	}
 };
@@ -74,10 +74,10 @@ public:
 			srand((unsigned int)time(0));
 			int n = rand() % 4 + 1;
 
-			cout << "MyRunnable rand is: " << n << endl;
+			cout << "AsyncWaitMsg_Runnable rand is: " << n << endl;
 
-			MessageCenter::instance().Dispatch(n, 0, 0);
-			Sleep(1000);
+			AsyncWaitMsg::instance().Dispatch(n, 0, 0);
+			Poco::Thread::sleep(1000);
 		}
 	}
 };
@@ -110,15 +110,15 @@ void TestAsyncWaitMsg()
 
 	auto func1 = [local_string] (int msg, int param1, int param2) 
 	{ 
-		std::cout << "this is test1 " << msg << endl << local_string << endl; 
+		std::cout << "[TestAsyncWaitMsg] -- test1 " << msg << endl << local_string << endl; 
 	}; 
 
 	auto func2 = [local_string] (int msg, int param1, int param2) 
 	{ 
-		std::cout << "this is test2 " << msg << endl << local_string << endl; 
+		std::cout << "[TestAsyncWaitMsg] -- test2 " << msg << endl << local_string << endl; 
 	}; 
 
-
+	// NormalCallbackItem, Please pay attention to "_type"
 	boost::shared_ptr<NormalCallbackItem> pItem1(new NormalCallbackItem());
 	pItem1->_msg = testMessage1;
 	//pItem1->_callback = Ontest1;	// this is ok!
@@ -126,16 +126,16 @@ void TestAsyncWaitMsg()
 	pItem1->_timeout = 2000;
 	pItem1->_timeOutCallback = [] (int msg) { std::cout << "test timeout1! " << endl; };
 	//pItem1->_type = Once;	// if you want response only one time.
-	MessageCenter::instance().AddListener(pItem1);
+	AsyncWaitMsg::instance().AddListener(pItem1);
 
-	//------------------
+	// MutiCallbackItem
  	boost::shared_ptr<MutiCallbackItem> pItem2(new MutiCallbackItem());
  	pItem2->_msgVec.push_back(testMessage2);
  	pItem2->_msgVec.push_back(testMessage3);
  	pItem2->_callback = func2;
  	pItem2->_timeout = 3000;
  	pItem2->_timeOutCallback =  [] (int msg) { std::cout << "test timeout2! " << endl; };
- 	MessageCenter::instance().AddListener(pItem2);
+ 	AsyncWaitMsg::instance().AddListener(pItem2);
 }
 
 
@@ -151,7 +151,7 @@ int main()
 		cin >> c;	
 	}
 
-	MessageCenter::instance().Stop();
+	AsyncWaitMsg::instance().Stop();
 
 	return 0;
 }
